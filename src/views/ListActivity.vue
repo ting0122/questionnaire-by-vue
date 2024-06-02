@@ -34,7 +34,21 @@ export default {
             </div>
         </div>
         <div class="acts">
+            <div class="ico">
+                <i class="fa-solid fa-trash"></i>
+                <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+            <div class="acts_bar">
+                <h3>No.</h3>
+                <h3>Name</h3>
+                <h3>Status</h3>
+                <h3>Start</h3>
+                <h3>End</h3>
+                <h3>result</h3>
+            </div>
+            <div class="acts_container">
 
+            </div>
         </div>
     </div>
 </template>
@@ -46,7 +60,7 @@ export default {
     top: 5%;
     width: 80%;
     height: 90%;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     .search_bar{
         width: 100%;
         height: 30%;
@@ -55,19 +69,19 @@ export default {
             display: flex;
             width: 100%;
             height: 50%;
-            border: 1px solid black;
+            /* border: 1px solid black; */
             h1{
                 display: flex;
                 width:425px;
                 padding-left: 200px;
                 height:100%;
-                border: 1px solid black;
+                /* border: 1px solid black; */
                 align-items: center;
             }
             .search_container{
                 width: 100%;
                 height: 100%;
-                border: 1px solid black;
+                /* border: 1px solid black; */
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -94,13 +108,13 @@ export default {
             display: flex;
             width: 100%;
             height: 50%;
-            border: 1px solid black;
+            /* border: 1px solid black; */
             h1{
                 display: flex;
                 width:425px;
                 padding-left: 200px;
                 height:100%;
-                border: 1px solid black;
+                /* border: 1px solid black; */
                 align-items: center;
             }
             form{
@@ -139,7 +153,40 @@ export default {
     .acts{
         width: 100%;
         height: 70%;
-        border: 1px solid black;
+        /* border: 1px solid black; */
+        .ico{
+            width: 100%;
+            height: 10%;
+            /* border: 1px solid black; */
+            i{  
+                
+                height: 90%;
+                font-size: 40px;
+                padding-top: 10px;
+                margin-right: 30px;
+            }
+        }
+        .acts_bar{
+            width: 100%;
+            height: 10%;
+            border: 1px solid black;
+            display: flex;
+            h3{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                width: 10%;
+                margin-left: 100px;
+                font-size: 20px;
+                text-align: center; 
+            }
+        }
+        .acts_container{
+            width: 100%;
+            height: 80%;
+            border: 1px solid black;
+        }
     }
 }
 </style>
