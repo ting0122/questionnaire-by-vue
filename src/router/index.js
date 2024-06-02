@@ -8,6 +8,11 @@ const router = createRouter({
       path: '/',
       name: 'ListActivity',
       component: ListActivity
+    },
+    {
+      path: '/edit',
+      name: 'Activity',
+      component: ()=>import("../views/TitleActivity.vue")
     }
   ]
 })
