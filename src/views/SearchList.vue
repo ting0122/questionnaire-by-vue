@@ -1,5 +1,4 @@
 <script>
-import Title from './Title.vue';
 
 export default {
     name: 'SearchList',
@@ -57,7 +56,7 @@ export default {
     <!-- trash and edit button -->
     <div class="icons">
         <i class="fa-solid fa-trash" v-on:click="trash"></i>
-        <i class="fa-solid fa-pen-to-square" v-on:click="edit"></i>
+        <i class="fa-solid fa-pen-to-square" @click="$emit('changeComponent','Title')"></i>
     </div>
     <!-- questionnaire bar -->
     <div class="search-list">
