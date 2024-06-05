@@ -59,7 +59,7 @@ export default {
         <i class="fa-solid fa-pen-to-square" @click="edit"></i>
     </div>
     <!-- questionnaire bar -->
-    <div class="search-list">
+    <div class="search-list">   
         <table>
             <thead>
                 <tr>

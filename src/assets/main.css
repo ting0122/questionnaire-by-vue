@@ -3,4 +3,10 @@
   margin: 0;
   box-sizing: border-box;
   background-color: white;
+}
+* i:hover, * button:hover {
+  scale: 1.1;
+}
+* i:active, * button:active {
+  scale: 0.9;
 }/*# sourceMappingURL=main.css.map */

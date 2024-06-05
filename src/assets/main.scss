@@ -3,4 +3,12 @@
     margin: 0;
     box-sizing: border-box;
     background-color: white;
+    i,button{
+        &:hover{
+            scale: 1.1;
+        }
+        &:active{
+            scale: 0.9;
+        }
+    }
 }
