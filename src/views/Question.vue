@@ -1,13 +1,16 @@
 <script>
 export default{
+    name: 'Question',
+    props:{
+        questions: Array
+    },
     data(){
         return{
-            questions: [],
             newQuestion: {
-            questionText: '',
-            choices: '',
-            type: '單選題',
-            required: false
+                questionText: '',
+                choices: '',
+                type: '單選題',
+                required: false
             }
         }
     },
@@ -15,20 +18,22 @@ export default{
         Previous(){
             this.$emit('return-text','Title')
         },
-        SubmitReq(){
-
-        },
         addQuestion(){
             const choicesArray = this.newQuestion.choices.split(';').map(choice => choice.trim());
-            this.questions.push(
-                {
-                    ...this.newQuestion,
-                    choices: choicesArray
-                }
-            );
+            const quesiton = { ...this.newQuestion, choices: choicesArray};
+            this.$emit('update-questions',[...this.questions,question]);
+            this.newQuestion.questionText='';
+            this.newQuestion.choices='';
+            this.newQuestion.type='單選題';
+            this.newQuestion.required=false;
         },
         removeQuestion(index){
-            this.questions.splice(index,1);
+            const updateQuestions = [...this.questions];
+            updateQuestions.splice(index,1);
+            this.$emit('update-questions', updateQuestions);
+        },
+        submitQuestions(){
+            this.$emit('return-text','SubmitPage');
         }
     }
 }
@@ -90,7 +95,7 @@ export default{
     </div>
     <div class="btns">
         <button @click="Previous">Previous</button>
-        <button>SubmitReq</button>
+        <button @click="SubmitRequesetions">SubmitReq</button>
     </div>
 </template>
 

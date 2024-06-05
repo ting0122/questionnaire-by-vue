@@ -1,9 +1,13 @@
 <script>
+
 export default{
     name: 'Title',
+    props:{
+        questionnaire: Object
+    },
     data(){
         return{
-            
+            localQuestionnaire: {...this.questionnaire}
         }
     },
     methods:{
@@ -13,7 +17,8 @@ export default{
         },
         //go to next page
         next(){
-            this.$emit("return-text",'Question')
+            this.$emit("update-questionnaire",this.localQuestionnaire);
+            this.$emit("return-text",'Question');
         }
     }
 }
@@ -23,19 +28,19 @@ export default{
     <div class="qes-container">
         <div class="title q1">
             <label for="title">Name :</label>
-            <input type="text">
+            <input type="text" v-model="localQuestionnaire.name">
         </div>
         <div class="title q2">
             <label for="description">Description :</label>
-            <input type="text">
+            <input type="text" v-model="localQuestionnaire.description">
         </div>
         <div class="title q3">
             <label for="start-date">Start Date :</label>
-            <input type="date">
+            <input type="date" v-model="localQuestionnaire.startDate">
         </div>
         <div class="title q4">
             <label for="end-date">End Date :</label>
-            <input type="date">
+            <input type="date" v-model="localQuestionnaire.endDate">
         </div>
         <div class="bnts">
             <button @click="cancel">Cancel</button>

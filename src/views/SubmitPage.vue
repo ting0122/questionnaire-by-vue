@@ -1,10 +1,24 @@
 <script>
 export default{
     name: 'SubmitPage',
+    props:{
+        questions: Array,
+        questionnaire: Object
+    },
     data(){
         return{
-            
+            questions: [
+                
+            ]
         }
+    },
+    methods:{
+        save(){
+            this.$emit('save');
+        },
+        publish(){
+            this.$emit('publish');
+        }  
     }
 }
 </script>
@@ -15,11 +29,11 @@ export default{
     </div>
     <div class="q-name">
         <div class="name">
-            Good Question
+            {{ quesionnaire.name }}
         </div>
     </div>
     <div class="q-desc">
-        <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo porro minus molestiae corrupti voluptatibus corporis aliquam assumenda ipsum est sed odit repellat saepe, omnis, maxime quidem. Modi maxime ducimus mollitia?</span>
+        <span>{{ questionnaire.description }}</span>
     </div>
     <div class="person">
         <label for="user-name">Name :</label><input type="text"><br>
@@ -30,13 +44,19 @@ export default{
     <div class="qs">
         <!-- use ordered list by v-for for questions -->
         <ol>
-            <li>apple</li>
-            <li>apple</li>
-            <li>apple</li>
-            <li>apple</li>
-            <li>apple</li>
-            <li>apple</li>
+            <li v-for="(question, index) in questions" :key="index">
+                {{ question.questionText }}
+                <ul>
+                    <li v-for="choice in question.choices" :key="choice">
+                        <input type="checkbox">{{ choice }}
+                    </li>
+                </ul>
+            </li>
         </ol>
+        <div class="btns">
+        <button @click="save">儲存</button>
+        <button @click="publish">儲存並發布</button>
+    </div>
     </div>
 </template>
 
@@ -106,14 +126,38 @@ export default{
 .qs{
     position: absolute;
     top: 70%;
-    height: 80%;
     width: 90%;
-    border: 1px solid black;
     ol{
         position: absolute;
         left: 60px;
-        top:10%;
-        font-size: 60px;
+        top:5%;
+        font-size: 30px;
+        li{
+            margin-left: 30px;
+            margin-top: 40px;
+            ul{
+                li{
+                    list-style: none;
+                    margin-top: 12px;
+                    input{
+                        width: 3em;
+                        height: 1.5rem;
+                    }
+                }
+            }
+        }
+    }
+    .btns{
+        position:fixed;
+        bottom: 10%;
+        right: 15%;
+        width: auto;
+        button{
+            width: 200px;
+            margin-left: 18px;
+            font-size: 24px;
+        }
     }
 }
+
 </style>
