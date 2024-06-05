@@ -5,6 +5,16 @@ export default{
         return{
             
         }
+    },
+    methods:{
+        //return to search list
+        cancel(){
+            this.$emit("return-text",'SearchList')
+        },
+        //go to next page
+        next(){
+            this.$emit("return-text",'Question')
+        }
     }
 }
 </script>
@@ -28,8 +38,8 @@ export default{
             <input type="date">
         </div>
         <div class="bnts">
-            <button>Cancel</button>
-            <button>Next</button>
+            <button @click="cancel">Cancel</button>
+            <button @click="next">Next</button>
         </div>      
     </div>
 </template>
@@ -63,12 +73,22 @@ export default{
         }
     }
     .bnts{
-        width: 100%;
+        display: flex;
+        justify-content: right;
+        width: 72%;
         height: 10%;
-        border: 1px solid black;
+        // border: 1px solid black;
         button{
-            width: 60px;
-            height: 30px;
+            font-size: 24px;
+            width: 100px;
+            height: 100%;
+            margin-left: 30px;
+            &:hover{
+                scale: 1.1;
+            }
+            &:active{
+                scale:0.9;
+            }
         }
     }
 }

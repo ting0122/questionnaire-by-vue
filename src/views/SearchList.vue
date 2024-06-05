@@ -30,8 +30,8 @@ export default {
             //delete the specify questionnaire
         },
         edit(){
-            //go to the Title vue
-        }
+            this.$emit('return-text','Title');
+        },
     }
 }
 </script>
@@ -55,8 +55,8 @@ export default {
     </div>
     <!-- trash and edit button -->
     <div class="icons">
-        <i class="fa-solid fa-trash" v-on:click="trash"></i>
-        <i class="fa-solid fa-pen-to-square" @click="$emit('changeComponent','Title')"></i>
+        <i class="fa-solid fa-trash" @click="trash"></i>
+        <i class="fa-solid fa-pen-to-square" @click="edit"></i>
     </div>
     <!-- questionnaire bar -->
     <div class="search-list">
@@ -147,6 +147,12 @@ export default {
         margin-left: 10px;
         margin-right: 20px;
         font-size: 40px;
+        &:hover{
+            scale: 1.1;
+        }
+        &:active{
+            scale: 0.9;
+        }
     }
 }
 .search-list {

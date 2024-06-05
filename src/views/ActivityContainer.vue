@@ -36,7 +36,7 @@ export default{
             <button @click="changeComponent('SearchList')">Show SearchList</button>
     </div>
     <div class="show-bar">
-        <component :is="currentComponent"></component>
+        <component :is="currentComponent" @return-text="changeComponent"></component>
     </div>
 </template>
 
