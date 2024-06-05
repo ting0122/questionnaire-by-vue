@@ -87,7 +87,7 @@ export default{
                 scale: 1.1;
             }
             &:active{
-                scale:0.9;
+                scale:0.9;  
             }
         }
     }
