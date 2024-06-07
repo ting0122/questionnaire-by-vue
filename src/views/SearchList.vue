@@ -1,37 +1,94 @@
 <script>
+import api from '@/api';
+
 
 export default {
     name: 'SearchList',
     data() {
         return {
-            searchResults: [
-                { id: 1, questionnaireName: '问卷1', status: '已发布', startDate: '2024-06-01', endDate: '2024-06-10', resultLink: '#' },
-                { id: 2, questionnaireName: '问卷2', status: '未发布', startDate: '2024-06-05', endDate: '2024-06-15', resultLink: '#' },
-                { id: 3, questionnaireName: '问卷3', status: '已发布', startDate: '2024-06-03', endDate: '2024-06-12', resultLink: '#' },
-                { id: 4, questionnaireName: '问卷4', status: '未发布', startDate: '2024-06-07', endDate: '2024-06-20', resultLink: '#' },
-                { id: 5, questionnaireName: '问卷1', status: '已发布', startDate: '2024-06-01', endDate: '2024-06-10', resultLink: '#' },
-                { id: 6, questionnaireName: '问卷2', status: '未发布', startDate: '2024-06-05', endDate: '2024-06-15', resultLink: '#' },
-                { id: 7, questionnaireName: '问卷3', status: '已发布', startDate: '2024-06-03', endDate: '2024-06-12', resultLink: '#' },
-                { id: 8, questionnaireName: '问卷4', status: '未发布', startDate: '2024-06-07', endDate: '2024-06-20', resultLink: '#' },
-                { id: 3, questionnaireName: '问卷3', status: '已发布', startDate: '2024-06-03', endDate: '2024-06-12', resultLink: '#' },
-                { id: 4, questionnaireName: '问卷4', status: '未发布', startDate: '2024-06-07', endDate: '2024-06-20', resultLink: '#' },
-                { id: 5, questionnaireName: '问卷1', status: '已发布', startDate: '2024-06-01', endDate: '2024-06-10', resultLink: '#' },
-                { id: 6, questionnaireName: '问卷2', status: '未发布', startDate: '2024-06-05', endDate: '2024-06-15', resultLink: '#' },
-                { id: 7, questionnaireName: '问卷3', status: '已发布', startDate: '2024-06-03', endDate: '2024-06-12', resultLink: '#' },
-                { id: 8, questionnaireName: '问卷4', status: '未发布', startDate: '2024-06-07', endDate: '2024-06-20', resultLink: '#' },
-            ]
+            searchResults:[],
+            questionnaireName:'',
+            startDate:'',
+            endDate:'',
+            selectedQuestionnaires:[]
         }
     },
+    props:{
+        questions: {
+            type: Array,
+            required: true
+        },
+        questionnaire: {
+            type: Object,
+            required: true
+        }
+    },
+    emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save', 'publish'],
+
+    mounted(){
+        this.fetchAllQuestionnaires();
+    },
     methods: {
+        fetchAllQuestionnaires(){
+            api.getAllQuestionnaires()
+                .then(response => {
+                    if(response.data.code === 200){
+                        this.searchResults = response.data.questionnaires;
+                    }
+                    else{
+                        console.error('Error fetching questionnaire:' , response.data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching questionnaires:', error);
+                });
+        },
         search() {
-            //Call api of searchResults
+            const params = {
+                name: this.questionnaireName,
+                startDate: this.startDate,
+                endDate: this.endDate
+            };
+            api.getQuestionnaires(params)
+                .then(response => {
+                    if(response.data.code === 200){
+                        this.searchResults = response.data.questionnaires;
+                    }
+                    else{
+                        console.error('Error fetching questionnaire:' , response.data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error searching questionnaires:', error);
+                });
         },
         trash(){
-            //delete the specify questionnaire
+            const toDelete = this.selectedQuestionnaires.filter(item =>{
+                return !item.published || new Date(item.startTime) > new Date();
+            });
+
+            toDelete.forEach(item =>{
+                api.deleteQuestionnaire(item.id)
+                    .then(response=>{
+                        console.log('Deleted quesionnaire:' , item.id);
+                        this.fetchAllQuestionnaires();
+                    })
+                    .catch(error =>{
+                        console.log('Error deleting questionnaire:', error);
+                    });
+            });
         },
         edit(){
             this.$emit('return-text','Title');
         },
+        toggleSelection(item){
+            const index = this.selectedQuestionnaires.indexOf(item);
+            if(index > -1){
+                this.selectedQuestionnaires.splice(index, 1);
+            }else{
+                this.selectedQuestionnaires.push(item);
+            }
+        }
     }
 }
 </script>
@@ -49,7 +106,7 @@ export default {
                 <input type="date" id="startDate" v-model="startDate">
                 <span>到: </span>
                 <input type="date" id="endDate" v-model="endDate">
-                <button type="submit">搜尋</button>
+                <button type="submit" @click="search">搜尋</button>
             </div>
         </form>
     </div>
@@ -78,10 +135,10 @@ export default {
             <table>
                 <tbody>
                     <tr v-for="(item, index) in searchResults" :key="index">
-                        <td style="width: 130px;"><input type="checkbox"></td>
+                        <td style="width: 130px;"><input type="checkbox" @change="toggleSelection(item)"></td>
                         <td style="width: 130px;">{{ item.id }}</td>
-                        <td style="width: 250px;text-align: left;">{{ item.questionnaireName }}</td>
-                        <td style="width: 200px;">{{ item.status }}</td>
+                        <td style="width: 250px;text-align: left;">{{ item.name }}</td>
+                        <td style="width: 200px;">{{ item.published? '發布':'未發布' }}</td>
                         <td>{{ item.startDate }}</td>
                         <td>{{ item.endDate }}</td>
                         <td><a :href="item.resultLink">查看结果</a></td>

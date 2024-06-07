@@ -1,4 +1,6 @@
 <script>
+import api from '@/api';
+
 export default{
     name: 'SubmitPage',
     props:{
@@ -7,46 +9,95 @@ export default{
     },
     data(){
         return{
-            questions: [
-                
-            ]
+            userName:'',
+            phone:'',
+            email:'',
+            age:''
         }
     },
     methods:{
+        validateForm(){
+            if (!this.userName || !this.phone || !this.email || !this.age) {
+                alert('Please fill out all fields.');
+                return false;
+            }
+            if (!this.validateEmail(this.email)) {
+                alert('Please enter a valid email.');
+                return false;
+            }
+            return true;
+        },
+        validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(String(email).toLowerCase());
+        },
         save(){
-            this.$emit('save');
+            if(!this.validateForm())
+                return;
+            const data = {
+                userName: this.userName,
+                phone: this.phone,
+                email: this.email,
+                age: this.age,
+                questionnaire: this.questionnaire,
+                questions: this.questions
+            };
+
+            api.saveQuestionnaire(data)
+                .then(response => {
+                    alert('Data saved successfully');
+                })
+                .catch(error => {
+                    console.log('Error saving data:', error);
+                })
         },
         publish(){
-            this.$emit('publish');
-        }  
+            if(!this.validateForm())
+                return;
+            const data = {
+                userName: this.userName,
+                phone: this.phone,
+                email: this.email,
+                age: this.age,
+                questionnaire: { ...this.questionnaire, published: true },
+                questions: this.questions
+            };
+            api.saveQuestionnaire(data)
+                .then(response => {
+                    alert('Data saved successfully');
+                })
+                .catch(error => {
+                    console.log('Error saving data:', error);
+                })
+        }   
     }
 }
 </script>
 
 <template>
     <div class="Header">
-        <div class="time">time</div>
+        <div class="time">{{ new Date().toLocaleString() }}</div>
     </div>
     <div class="q-name">
         <div class="name">
-            {{ quesionnaire.name }}
+            {{ questionnaire.name }}
         </div>
     </div>
     <div class="q-desc">
         <span>{{ questionnaire.description }}</span>
     </div>
     <div class="person">
-        <label for="user-name">Name :</label><input type="text"><br>
-        <label for="phone">Phone :</label><input type="text"><br>
-        <label for="mail">Mail :</label><input type="text"><br>
-        <label for="age">Age :</label><input type="text"><br>
+        <label for="user-name">Name :</label><input id="user-name" type="text" v-model="userName"><br>
+        <label for="phone">Phone :</label><input id="phone" type="text" v-model="phone"><br>
+        <label for="mail">Mail :</label><input id="mail" type="text" v-model="email"><br>
+        <label for="age">Age :</label><input id="age" type="text" v-model="age"><br>
     </div>
     <div class="qs">
         <!-- use ordered list by v-for for questions -->
         <ol>
             <li v-for="(question, index) in questions" :key="index">
                 {{ question.questionText }}
-                <ul>
+                <ul v-if="question.choices && question.choices.length">
                     <li v-for="choice in question.choices" :key="choice">
                         <input type="checkbox">{{ choice }}
                     </li>

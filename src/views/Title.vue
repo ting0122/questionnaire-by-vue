@@ -10,6 +10,8 @@ export default{
             localQuestionnaire: {...this.questionnaire}
         }
     },
+    emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save', 'publish','return-text'],
+
     methods:{
         //return to search list
         cancel(){
@@ -43,8 +45,8 @@ export default{
             <input type="date" v-model="localQuestionnaire.endDate">
         </div>
         <div class="bnts">
-            <button @click="cancel">Cancel</button>
-            <button @click="next">Next</button>
+            <button @click="cancel">取消</button>
+            <button @click="next">下一頁</button>
         </div>      
     </div>
 </template>

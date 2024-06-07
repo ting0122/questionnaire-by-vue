@@ -14,13 +14,15 @@ export default{
             }
         }
     },
+    emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save', 'publish'],
+
     methods:{
         Previous(){
             this.$emit('return-text','Title')
         },
         addQuestion(){
             const choicesArray = this.newQuestion.choices.split(';').map(choice => choice.trim());
-            const quesiton = { ...this.newQuestion, choices: choicesArray};
+            const question = { ...this.newQuestion, choices: choicesArray};
             this.$emit('update-questions',[...this.questions,question]);
             this.newQuestion.questionText='';
             this.newQuestion.choices='';
@@ -59,7 +61,7 @@ export default{
             <button @click="addQuestion">Add Question</button>
         </div>
         <div class="icons">
-            <i class="fa-solid fa-trash"></i>
+            <i class="fa-solid fa-trash" @click="removeQuestion"></i>
         </div>
     </div>
     <!-- table -->
@@ -94,8 +96,8 @@ export default{
         </div>
     </div>
     <div class="btns">
-        <button @click="Previous">Previous</button>
-        <button @click="SubmitRequesetions">SubmitReq</button>
+        <button @click="Previous">上一頁</button>
+        <button @click="submitQuestions">提交</button>
     </div>
 </template>
 
