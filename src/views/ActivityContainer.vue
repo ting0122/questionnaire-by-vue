@@ -60,7 +60,7 @@
                     questionnaire: this.questionnaire,
                     questions: this.questions
                 };
-                api.saveQuestionaire(data)
+                api.saveQuestionnaire(data)
                     .then(response => {
                         console.log('Questionnaire saved:', response.data);
                     })
@@ -82,7 +82,7 @@
     </script>
 
     <template>
-        <div class="show-bar">
+        <div class="Show">
             <component  :is="currentComponent"
                         :questions="questions"
                         :questionnaire="questionnaire"
@@ -96,16 +96,14 @@
     </template>
 
     <style scoped lang="scss">
-        .show-bar{
-            position: absolute;
-            left: 10%;
-            top:5%;
-            border: 1px solid black;
-            height: 90dvh;
-            width: 80dvw;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow-y: auto;
-        }
+    *{
+        background-color: #eeeae7;
+        background-image: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
+        background-size: 4px 4px;
+    }   
+    .Show{
+        position: absolute;
+        height: auto;
+        width: 100dvw;
+    }
     </style>

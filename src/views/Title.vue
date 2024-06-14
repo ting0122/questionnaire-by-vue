@@ -53,6 +53,9 @@ export default{
 
 <style scoped lang="scss">
 .qes-container{
+    .body{
+        background-color: white;
+    }
     width: 60%;
     height: 80%;
     border: 1px solid black;
