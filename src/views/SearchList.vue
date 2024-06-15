@@ -10,7 +10,10 @@ export default {
             questionnaireName:'',
             startDate:'',
             endDate:'',
-            selectedQuestionnaires:[]
+            selectedQuestionnaires:[],
+            currentPage:1,
+            itemsPerPage:10,
+            pagesToShow:9
         }
     },
     props:{
@@ -28,7 +31,49 @@ export default {
     mounted(){
         this.fetchAllQuestionnaires();
     },
+    computed:{
+        totalPages(){
+            return Math.ceil(this.searchResults.length/this.itemsPerPage);
+        },
+        visiblePages(){
+            const totalPages = this.totalPages;
+            const currentPage = this.currentPage;
+            const pagesToShow = this.pagesToShow;
+            let startPage = Math.max(1, currentPage - Math.floor(pagesToShow/2));
+            let endPage = Math.min(totalPages, startPage+pagesToShow-1);
+
+            if(endPage - startPage + 1 < pagesToShow){
+                startPage = Math.max(1,endPage-pagesToShow+1);
+            }
+
+            return Array.from({ length:(endPage-startPage+1)},(_, i)=>startPage+i);
+
+        }
+    },
     methods: {
+        firstPage(){
+            if(this.currentPage > 1){
+                this.currentPage = 1;
+            }
+        },
+        previousPage(){
+            if(this.currentPage > 1){
+                this.currentPage--;
+            }
+        },
+        goToPage(page){
+            this.currentPage = page;
+        },
+        nextPage(){
+            if(this.currentPage < this.totalPages){
+                this.currentPage++;
+            }
+        },
+        lastPage(){
+            if(this.currentPage < this.totalPages){
+                this.currentPage = this.totalPages;
+            }
+        },
         fetchAllQuestionnaires(){
             api.getAllQuestionnaires()
                 .then(response => {
@@ -44,6 +89,7 @@ export default {
                 });
         },
         search() {
+
             const params = {
                 name: this.questionnaireName,
                 startDate: this.startDate,
@@ -53,6 +99,9 @@ export default {
                 .then(response => {
                     if(response.data.code === 200){
                         this.searchResults = response.data.questionnaires;
+                        this.$nextTick(() => {
+                            this.scrollToSearchBar();
+                        });
                     }
                     else{
                         console.error('Error fetching questionnaire:' , response.data.message);
@@ -61,6 +110,16 @@ export default {
                 .catch(error => {
                     console.error('Error searching questionnaires:', error);
                 });
+        },
+        scrollToSearchBar(){    
+            const searchBar = this.$el.querySelector('.SearchBar');
+            if(searchBar){
+                console.log('Scrolling to search bar');
+                window.scrollTo({
+                    top:searchBar.getBoundingClientRect().top + window.scrollY,
+                    behavior:'smooth'
+                });
+            }
         },
         trash(){
             const toDelete = this.selectedQuestionnaires.filter(item =>{
@@ -94,9 +153,13 @@ export default {
 </script>
 
 <template>
+    <!-- header -->
     <div class="header">
         <h1>NOT ONLY QUESTIONNAIRE</h1>
     </div>
+    <!-- left dash line -->
+    <div class="LeftDash"></div>
+    <!-- body -->
     <div class="ListContainer">
         <div class="SearchBar">
             <div class="QuizName">
@@ -108,12 +171,56 @@ export default {
                 <input type="date" id="quizBegin">
                 <label for="quizEnd">To :</label>
                 <input type="date" id="quizEnd">
-                <button>Search</button>
+                <button @click="search">Search</button>
             </div>
         </div>
-        <div class="SearchResult">
-
+        <div class="icons">
+            <i class="fa-solid fa-trash" @click="trash"></i>
+            <i class="fa-solid fa-pen-to-square" @click="edit"></i>
         </div>
+        <div class="SearchResult">
+            <table>
+                <thead>
+                    <!-- table header -->
+                    <tr class="table-header">
+                        <th></th>
+                        <th>NO.</th>
+                        <th>Questionnaire</th>
+                        <th>State</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Result</th>
+                    </tr> 
+                </thead>
+                <!-- table content -->
+                <tbody>
+                    <tr v-for="(item, index) in searchResults.slice(0,10)" :key="index">
+                        <td><input type="checkbox" @change="toggleSelection(item)"></td>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.ispublished?'Pub':'unPub' }}</td>
+                        <td>{{ item.startDate }}</td>
+                        <td>{{ item.endDate }}</td>
+                        <td><a :href="item.resultLink">Result</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="Pagination">
+                <button @click="firstPage" :disabled="currentPage === 1 ">&laquo;&laquo;</button>
+                <button @click="previousPage" :disabled="currentPage === 1">&laquo;</button>
+
+                <template v-for="page in visiblePages" :key="page">
+                    <button
+                            @click="goToPage(page)"
+                            :class="{ active: currentPage === page}">
+                        {{ page }}
+                    </button>
+                </template>
+
+                <button @click="nextPage" :disabled="currentPage === totalPages">&raquo;</button>
+                <button @click="lastPage" :disabled="currentPage === totalPages">&raquo;&raquo;</button>
+            </div>
     </div>
 </template>
 
@@ -139,6 +246,13 @@ export default {
         width: 60%;
         text-align: center;
     }
+}
+.LeftDash{
+    position: fixed;
+    height: 100dvh;
+    left: 4%;
+    top: 0;
+    border: 2px dotted rgb(77, 62, 62);
 }
 .ListContainer{
     width: 100%;
@@ -187,10 +301,71 @@ export default {
             }
         }
     }
+    .icons{
+        width: 40%;
+        height: 2.5%;
+        // border: 1px solid black;
+        background-image: url('/src/assets/zebra.jpeg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+        //filter for background
+        &::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 1;
+        }
+        i{
+            margin-top: 1%;
+            margin-left: 5px;
+            margin-right: 10px;
+            font-size: 35px;    
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+    }
     .SearchResult{
-        width: inherit;
+        width: 40%;
         height: 600px;
         border: 1px solid black;
+        background-color: rgb(221,216,216);
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            .table-header{
+                
+                th{
+                    background-color: black;
+                    color: white;
+                }
+            }
+            
+        }
+    }
+    .Pagination{
+        width:40%;
+        height: 2%;
+        // border: 1px solid black;
+        display: flex;
+        justify-content: center;
+        button{
+            width: 8%;
+            border: none;
+            font-size: 20px;
+            &:hover{
+                scale: 1;
+                font-size: 45px;
+                font-family: "Cookie", cursive;
+                font-weight: 400;
+                font-style: normal;
+            }
+        }
     }
 }
 </style>
