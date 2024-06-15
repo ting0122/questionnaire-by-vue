@@ -1,4 +1,5 @@
 <script>
+import headerVue from '@/components/header.vue';
 
 export default{
     name: 'Title',
@@ -11,7 +12,7 @@ export default{
         }
     },
     emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save', 'publish','return-text'],
-
+    components:{headerVue},
     methods:{
         //return to search list
         cancel(){
@@ -27,79 +28,89 @@ export default{
 </script>
 
 <template>
-    <div class="qes-container">
-        <div class="title q1">
-            <label for="title">Name :</label>
-            <input type="text" v-model="localQuestionnaire.name">
+    <headerVue></headerVue>
+    <div class="BasicQuiz">
+        <div class="q1">
+            <label for="quizName">Questionnaire :</label>
+            <input type="text" name="quizName" id="quizName" v-model="localQuestionnaire.name">
         </div>
-        <div class="title q2">
-            <label for="description">Description :</label>
-            <input type="text" v-model="localQuestionnaire.description">
+        <div class="q1">
+            <label for="quizDesc">description :</label>
+            <textarea name="quizDesc" id="quizDesc" v-model="localQuestionnaire.description"></textarea>
         </div>
-        <div class="title q3">
-            <label for="start-date">Start Date :</label>
-            <input type="date" v-model="localQuestionnaire.startDate">
+        <div class="q1 dt" id="afterDesc">
+            <label for="startDate">Start Date :</label>
+            <input type="date" id="startDate" v-model="localQuestionnaire.startDate">
         </div>
-        <div class="title q4">
-            <label for="end-date">End Date :</label>
-            <input type="date" v-model="localQuestionnaire.endDate">
+        <div class="q1 dt">
+            <label for="endDate">End Date :</label>
+            <input type="date" id="endDate" v-model="localQuestionnaire.endDate">
         </div>
-        <div class="bnts">
-            <button @click="cancel">取消</button>
-            <button @click="next">下一頁</button>
-        </div>      
+        <div class="btn">
+            <button @click="cancel">Cancel</button>
+            <button @click="next">Next</button>
+        </div>
     </div>
+    <div class="Content"></div>
 </template>
 
 <style scoped lang="scss">
-.qes-container{
-    .body{
-        background-color: white;
-    }
-    width: 60%;
-    height: 80%;
-    border: 1px solid black;
+*{
+    background-color: #eeeae7;
+    background-image: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
+    background-size: 4px 4px;
+}
+.BasicQuiz{
+    width: 100%;
+    height: 80dvh;
+    border-bottom: 3px dotted black;
+    font-size: 40px;
     display: flex;
     justify-content: center;
-    align-items: center;
     flex-direction: column;
-    .title{
-        width: 100%;
-        height: 15%;
-        font-size: 30px;
-        position: relative;
-        label{
+    position: relative;
+    .q1{
+        margin-top: 20px;
+        margin-left: 25%;
+        input, textarea{
             position: absolute;
-            left: 40px;
-        }   
-        input{
-            position: absolute;
-            left: 200px;
-            margin-left: 30px;
-            width: 60%;
+            left: 40%;
+            width: 40%;
             height: 40px;
-            font-size: 24px;
-            padding: 20px;
+            font-size: 20px;
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+        textarea{
+            resize: none;
+            padding: 10px 20px;
+            min-height: 20%;
         }
     }
-    .bnts{
-        display: flex;
-        justify-content: right;
-        width: 72%;
-        height: 10%;
-        // border: 1px solid black;
+    .dt{
+        input{
+            width: 15%;
+            padding-left: 60px;
+        } 
+    }
+    #afterDesc{
+        margin-top: 9%;
+    }
+    .btn{
+        position: absolute;
+        bottom: 20%;
+        right: 5%;
+        width: 30%;
         button{
-            font-size: 24px;
-            width: 100px;
-            height: 100%;
-            margin-left: 30px;
-            &:hover{
-                scale: 1.1;
-            }
-            &:active{
-                scale:0.9;  
-            }
+            width: 25%;
+            margin-left: 20px;
+            font-size: 40px;
         }
     }
 }
+.Content{
+    width: 100%;
+    height: 12dvh;
+}
+
 </style>
