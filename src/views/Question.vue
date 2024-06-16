@@ -1,4 +1,6 @@
 <script>
+import Header from '@/components/header.vue';
+
 export default{
     name: 'Question',
     props:{
@@ -15,7 +17,7 @@ export default{
         }
     },
     emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save', 'publish'],
-
+    components:{Header},
     methods:{
         Previous(){
             this.$emit('return-text','Title')
@@ -42,171 +44,161 @@ export default{
 </script>
 
 <template>
-    <!-- questions -->
-    <div class="question-bar">
-        <div class="q1">
-            <label>問題 :</label>
-            <input v-model="newQuestion.questionText" placeholder="Enter Your Question" class="name-input"/>
-            <select v-model="newQuestion.type">
-                <option value="單選題">單選題</option>
-                <option value="複選題">複選題</option>
-                <option value="文字題">文字題</option>
-            </select>
-            <label>必填 : </label>
-            <input type="checkbox" v-model="newQuestion.required" class="checkbox"/>
-        </div>
-        <div class="q2">
-            <label>選項 :</label>
-            <textarea v-model="newQuestion.choices" placeholder="Enter choices sperated by ;"></textarea>
-            <button @click="addQuestion">Add Question</button>
+    <Header></Header>
+    <div class="BigContainer">
+        <div class="QuizAdd">
+            <div class="q1">
+                <label for="question">Question :</label>
+                <input type="text" id="question" v-model="newQuestion.questionText" placeholder="Enter your Question...">
+                <select name="type" id="type" v-model="newQuestion.type">
+                    <option value="單選題">MCQ</option>
+                    <option value="複選題">MRQ</option>
+                    <option value="文字題">FITB</option>
+                </select>
+                <label for="required">Required :</label>
+                <input type="checkbox" v-model="newQuestion.required" id="cb">
+            </div>
+            <div class="q2">
+                <label for="choices">Choice :</label>
+                <textarea name="choices" id="choices" v-model="newQuestion.choices" placeholder="Enter choices seperated by ;"></textarea>
+                <button @click="addQuestion">Add</button>
+            </div>
         </div>
         <div class="icons">
             <i class="fa-solid fa-trash" @click="removeQuestion"></i>
         </div>
-    </div>
-    <!-- table -->
-    <div class="bigContainer">
-        <!-- question title bar -->
-        <table>
-            <thead>
-                <tr>
-                    <th>_</th>
-                    <th>編號</th>
-                    <th>內容</th>
-                    <th>問題種類</th>
-                    <th>必填</th>
-                    <th>編輯</th>
-                </tr>
-            </thead>
-        </table>
-        <!-- question content table -->
-        <div class="tbody-Container">
+        <div class="QuizShow">
             <table>
+                <thead>
+                    <th></th>
+                    <th>No.</th>
+                    <th>Question</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Edit</th>
+                </thead>
                 <tbody>
-                    <tr v-for="(item,index) in questions" :key="index">
+                    <tr v-for="(item, index) in questions" :key="index">
                         <td><input type="checkbox"></td>
                         <td>{{ index+1 }}</td>
                         <td>{{ item.questionText }}</td>
                         <td>{{ item.type }}</td>
-                        <td>{{ item.required ? '是':'否' }}</td>
+                        <td>{{ item.required? 'yes':'no' }}</td>
                         <td><a :href="item.resultLink">Edit</a></td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    </div>
-    <div class="btns">
-        <button @click="Previous">上一頁</button>
-        <button @click="submitQuestions">提交</button>
+        <div class="btns">
+            <button @click="Previous">Prev</button>
+            <button @click="submitQuestions">Submit</button>
+        </div>
     </div>
 </template>
 
 <style scoped lang="scss">
-.question-bar {
-    position: absolute;
-    top: 3%;
-    width: 80%;
-    height: 40%;
-    border: 1px solid black;
-    .q1, .q2 {
-        display: flex;
-        justify-content: left;
-        align-items: center;
-        font-size: 24px;
-        border: 1px solid black;
-        width: 100%;
-        height: 50%;
-        padding: 30px;
-    }
-    .q1{
-        input{
-            height: 10%;
-            margin-left: 80px;
-            font-size: 24px;
-            padding: 20px;
-        }
-        .name-input{
-            margin-left: 125px;
-        }
-        select{
-            width: 12%;
-            height: 50%;
-            margin: 0 40px;
-            font-size: 24px;
-        }
-    }
-    .q2{
-        textarea{
-            margin-left: 120px;
-            resize: none;
-            font-size: 24px;
-            padding: 20px;
-            width:50%;
-        }
-        button{
-            margin-left: 80px ;
-            width: 10%;
-            height: 40%;
-        }
-    }
+*{
+    background-color: #eeeae7;
+    background-image: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
+    background-size: 4px 4px;
 }
-.icons{
-    border: 1px solid black;
+.BigContainer{
     width: 100%;
-    height: 20%;
+    height: 92dvh;
     display: flex;
-    justify-content: left;
     align-items: center;
-    i{
-        margin-left: 8px;
-        font-size: 40px;
-    }
-}
-.bigContainer{
-    position: absolute;
-    top: 50%;
-    width: 80%;
-    height: 40%;
-    border: 1px solid black;
-    table{
-        font-size: 24px;
-        width: 100%;
-        border-collapse: collapse;
-        thead th {
-            padding-left: 12px;
-            border-bottom: 1px solid black;
-            text-align: left;
-            background-color: black;
-            color: white;
-        }
-    }
-    .tbody-container{
-        height: calc(100% - 40px);
-        overflow-y: auto;
-        border: 1px solid red;
-        table {
+    flex-direction: column;
+    .QuizAdd{
+        margin-top: 30px;
+        width: 60%;
+        height: 40dvh;
+        border: 3px dotted black;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .q1{
             width: 100%;
-            table-layout: auto;
-            // border-collapse: collapse;
-            tbody td { 
-                font-size: 24px;
+            height: 50%;
+            border-bottom: 3px dotted black;
+            font-size: 40px;
+            align-content: center;
+            padding: 10px 60px;
+            input{
+                margin-left: 20px;
+                width: 30%;
+                height: 20%;
+                font-size: 20px;
+                padding:1px 20px;
+            }
+            select{
+                margin-left:20px;
+                margin-right: 100px;
+                width: 10%;
+                height: 20%;
+                font-size: 20px;
+            }
+            #cb{
+                width: 40px;
+            }
+        }
+        .q2{
+            width: 100%;
+            height: 50%;
+            // border: 1px solid black;
+            font-size: 40px;
+            align-content: center;
+            padding: 10px 60px;
+            position: relative;
+            label{
+                position: absolute;
+                top: 10;
+            }
+            textarea{
+                margin-left: 18%;
+                margin-right: 60px;
+                resize: none;
+                padding: 10px 20px;
+                font-size: 20px;
+                min-height: 100%;
+                min-width: 50%;
+            }
+            button{
+                position: absolute;
+                top: 35%;
+                right: 10%;
+                font-size: 40px;
+                width: 10%;
             }
         }
     }
-}
-.btns{
-    position: absolute;
-    bottom: 0;
-    width: 80%;
-    display: flex;
-    justify-content: right;
-    align-items: center;
-    border: 1px solid black;
-    height: 80px;
-    button{
-        margin-left: 30px;
-        height: 80%;
-        width: 15%;
+    .icons{
+        width: 60%;
+        height: 5%;
+        font-size: 30px;
+        padding-top: 5px;
+        padding-left: 5px;
     }
+    .QuizShow{
+        width: 60%;
+        height: 30dvh;
+        border: 3px dotted black;
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            th{
+                background-color: black;
+                color: white;
+            }
+        }
+    }
+    .btns{
+        width: 60%;
+        text-align: right;
+        button{
+            margin-left: 20px;
+            font-size: 40px;
+        }
+    }
+    
 }
 </style>
