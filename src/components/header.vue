@@ -25,7 +25,7 @@ export default{
 .header{
     width: 100%;
     height: 8dvh;
-    border-bottom: 3px dotted black;
+    // border-bottom: 3px dotted black;
     text-align: center;
     display: flex;
     justify-content: center;
