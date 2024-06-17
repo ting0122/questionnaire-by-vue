@@ -82,10 +82,10 @@ export default{
         <div class="QuizName">{{ questionnaire.name }}</div>
         <div class="QuizDesc">{{ questionnaire.description }}</div>
         <div class="PersonInfo">
-            <label for="user-name">Name :</label><input id="user-name" type="text"><br>
-            <label for="phone">Phone :</label><input id="phone" type="text"><br>
-            <label for="mail">Mail :</label><input id="mail" type="text"><br>
-            <label for="age">Age :</label><input id="age" type="text"><br>
+            <label for="user-name">Name :</label><input id="user-name" type="text" v-model="userName"><br>
+            <label for="phone">Phone :</label><input id="phone" type="text" v-model="phone"><br>
+            <label for="mail">Mail :</label><input id="mail" type="text" v-model="email"><br>
+            <label for="age">Age :</label><input id="age" type="text" v-model="age"><br>
         </div>
         <div class="Qs">
             <ol>
@@ -127,26 +127,35 @@ export default{
     .QuizName{
         width: 60%;
         height: 10dvh;
-        // border-bottom: 3px dotted black;
+        border: 3px dotted black;
+        border-bottom: 0    ;
         display: flex;
         justify-content: center;
         align-items: center;
+        background-color: rgb(221,216,216);
     }
     .QuizDesc{
         width: 60%;
         height: 20dvh;
-        // border-bottom: 3px dotted black;
+        border: 3px dotted black;
+        border-bottom: 0;
         display: flex;
         justify-content: center;
         align-items: center;
+        background-color: rgb(221,216,216);
     }
     .PersonInfo{
         width: 60%;
         height: 25dvh;
-        // border-bottom: 3px dotted black;
+        border: 3px dotted black;
+        border-bottom: 0;
         padding: 30px 10%;
         position: relative;
         font-size: 40px;
+        background-color: rgb(221,216,216);
+        *{
+            background: inherit;
+        }
         input{
             position: absolute;
             left: 40%;
@@ -154,12 +163,17 @@ export default{
             height: 40px;
             font-size: 24px;
             padding: 0 20px;
+            background-color: rgb(221,216,216);
         }
     }
     .Qs{
         width: 60%;
         height: 50dvh;
-        // border: 3px dotted black;
+        border: 3px dotted black;
+        background-color: rgb(221,216,216);
+        *{
+            background: inherit;
+        }
         .btns{
             position: fixed;
             bottom: 1%;

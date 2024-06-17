@@ -24,6 +24,10 @@ export default {
         questionnaire: {
             type: Object,
             required: true
+        },
+        isLocked:{
+            type: Boolean,
+            required: true
         }
     },
     emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save', 'publish'],
@@ -125,15 +129,14 @@ export default {
             const toDelete = this.selectedQuestionnaires.filter(item =>{
                 return !item.published || new Date(item.startTime) > new Date();
             });
-            console.log(toDelete);
             toDelete.forEach(item =>{
                 api.deleteQuestionnaire(item.id)
                     .then(response=>{
-                        console.log('Deleted quesionnaire:' , item.id);
+                        alert(`Deleted quesionnaire:${item.name}`);
                         this.fetchAllQuestionnaires();
                     })
                     .catch(error =>{
-                        console.log('Error deleting questionnaire:', error);
+                        alert(`Error deleting questionnaire:${item.name}`);
                     });
             });
         },
@@ -141,6 +144,7 @@ export default {
             this.$emit('return-text','Title');
         },
         toggleSelection(item){
+            console.log(item.id)
             const index = this.selectedQuestionnaires.indexOf(item);
             if(index > -1){
                 this.selectedQuestionnaires.splice(index, 1);
@@ -174,7 +178,7 @@ export default {
                 <button @click="search">Search</button>
             </div>
         </div>
-        <div class="icons">
+        <div class="icons" v-if="!isLocked">
             <i class="fa-solid fa-trash" @click="trash"></i>
             <i class="fa-solid fa-pen-to-square" @click="edit"></i>
         </div>
@@ -196,7 +200,7 @@ export default {
                 <tbody>
                     <tr v-for="(item, index) in searchResults.slice(0,10)" :key="index">
                         <td><input type="checkbox" @change="toggleSelection(item)"></td>
-                        <td>{{ item.id }}</td>
+                        <td>{{ index+1 }}</td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.ispublished?'Pub':'unPub' }}</td>
                         <td>{{ item.startDate }}</td>

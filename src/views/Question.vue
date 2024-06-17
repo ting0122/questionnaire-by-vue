@@ -11,7 +11,7 @@ export default{
             newQuestion: {
                 questionText: '',
                 choices: '',
-                type: '單選題',
+                type: 'MCQ',
                 required: false
             }
         }
@@ -47,13 +47,14 @@ export default{
     <Header></Header>
     <div class="BigContainer">
         <div class="QuizAdd">
+            <img src="/src/assets/alley.jpg" alt="alley">
             <div class="q1">
                 <label for="question">Question :</label>
                 <input type="text" id="question" v-model="newQuestion.questionText" placeholder="Enter your Question...">
                 <select name="type" id="type" v-model="newQuestion.type">
-                    <option value="單選題">MCQ</option>
-                    <option value="複選題">MRQ</option>
-                    <option value="文字題">FITB</option>
+                    <option value="MCQ">MCQ</option>
+                    <option value="MRQ">MRQ</option>
+                    <option value="FITB">FITB</option>
                 </select>
                 <label for="required">Required :</label>
                 <input type="checkbox" v-model="newQuestion.required" id="cb">
@@ -97,11 +98,11 @@ export default{
 </template>
 
 <style scoped lang="scss">
-*{
-    background-color: #eeeae7;
-    background-image: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
-    background-size: 4px 4px;
-}
+// *{
+//     background-color: #eeeae7;
+//     background-image: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
+//     background-size: 4px 4px;
+// }
 .BigContainer{
     width: 100%;
     height: 92dvh;
@@ -111,27 +112,41 @@ export default{
     font-family: "Cookie", cursive;
     font-weight: 400;
     font-style: normal;
-    *{
-        font: inherit   ;
-    }
+    // *{
+    //     font: inherit   ;
+    // }
     .QuizAdd{
         margin-top: 30px;
-        width: 60%;
+        width: 45%;
         height: 40dvh;
-        border: 3px dotted black;
+        // border: 4px dotted black;
         display: flex;
         flex-direction: column;
         align-items: center;
+        position: relative;
+        img{
+            position: absolute;
+            width: 100%;
+            height: 80dvh;
+            opacity: 0.1;
+            left: 0;
+            z-index:0;
+        }
+        *{
+            background:inherit;
+        }
         .q1{
             width: 100%;
             height: 50%;
-            border-bottom: 3px dotted black;
+            border: 4px dotted black;
+            border-bottom: 0;
             font-size: 40px;
             align-content: center;
             padding: 10px 60px;
+            z-index: 1;
             input{
                 margin-left: 20px;
-                width: 30%;
+                width: 25%;
                 height: 20%;
                 font-size: 20px;
                 padding:1px 20px;
@@ -142,15 +157,19 @@ export default{
                 width: 10%;
                 height: 20%;
                 font-size: 20px;
+                font-family: "Cookie", cursive;
+                font-weight: 400;
+                font-style: normal;
             }
             #cb{
-                width: 40px;
+                width: 30px;
+                opacity: 0.2;
             }
         }
         .q2{
             width: 100%;
             height: 50%;
-            // border: 1px solid black;
+            border: 4px dotted black;
             font-size: 40px;
             align-content: center;
             padding: 10px 60px;
@@ -174,20 +193,27 @@ export default{
                 right: 10%;
                 font-size: 40px;
                 width: 10%;
+                font-family: "Cookie", cursive;
+                font-weight: 400;
+                font-style: normal;
             }
         }
     }
     .icons{
-        width: 60%;
+        width: 45%;
         height: 5%;
         font-size: 30px;
         padding-top: 5px;
         padding-left: 5px;
+        // border: 1px solid black;
+        z-index: 1;
     }
     .QuizShow{
-        width: 60%;
+        width: 45%;
         height: 30dvh;
-        border: 3px dotted black;
+        // border: 3px dotted black;
+        z-index: 1;
+        overflow-y: auto;
         table{
             width: 100%;
             border-collapse: collapse;
@@ -202,11 +228,18 @@ export default{
         }
     }
     .btns{
-        width: 60%;
+        width: 45%;
         text-align: right;
+        z-index: 1;
+        // border: 1px solid black;
+        margin-top: 10px;
         button{
             margin-left: 20px;
-            font-size: 40px;
+            font-size: 30px;
+            background: inherit;
+            font-family: "Cookie", cursive;
+            font-weight: 400;
+            font-style: normal;
         }
     }
     

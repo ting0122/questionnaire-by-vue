@@ -23,6 +23,8 @@
                 },
                 //questions and choices
                 questions:[],
+                //manage or client mode
+                isLocked:true
             }
         },
         components:{
@@ -34,6 +36,10 @@
             SubmitPage
         },
         methods:{
+            //change manage or client mode
+            toggleLock(){
+                this.isLocked = !this.isLocked;
+            },
             //change component page
             changeComponent(componentName){
                 this.currentComponent = componentName;
@@ -82,10 +88,15 @@
     </script>
 
     <template>
+        <div class="icons">
+            <i class="fa-solid fa-lock" v-if="isLocked" @click="toggleLock"></i>
+            <i class="fa-solid fa-lock-open" v-else @click="toggleLock"></i>
+        </div>
         <div class="Show">
             <component  :is="currentComponent"
                         :questions="questions"
                         :questionnaire="questionnaire"
+                        :is-locked="isLocked"
                         @update-questionnaire="updateQuestionnaire"
                         @update-questions="updateQuestions"
                         @return-text="changeComponent"
@@ -94,13 +105,20 @@
             </component>
         </div>
     </template>
-
     <style scoped lang="scss">
     *{
         background-color: #eeeae7;
         background-image: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
         background-size: 4px 4px;
-    }   
+    }
+    .icons{
+        width: 100%;
+        height: 1%;
+        text-align: right;
+        i{
+            font-size: 30px;
+        }
+    }
     .Show{
         position: absolute;
         height: auto;

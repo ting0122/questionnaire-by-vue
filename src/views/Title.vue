@@ -78,9 +78,9 @@ export default{
     font-family: "Cookie", cursive;
     font-weight: 400;
     font-style: normal;
-    *{
-        font: inherit;
-    }
+    // *{
+    //     font: inherit;
+    // }
     .LeftImg{
         width: 50%;
         height: 80dvh;
@@ -144,6 +144,9 @@ export default{
                 width: 40%;
                 margin-left: 20px;
                 font-size: 30px;
+                font-family: "Cookie", cursive;
+                font-weight: 400;
+                font-style: normal;
             }
         }
     }
