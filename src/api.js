@@ -14,6 +14,6 @@ export default{
         return axios.get(`${BASE_URL}/questionnaires`, { params: params });
     },
     deleteQuestionnaire(id) {
-        return axios.delete(`${BASE_URL}/questionnaires/${id}`);
+        return axios.delete(`${BASE_URL}/questionnaires`,{ params: { questionnaireId: id } });
     }
 }

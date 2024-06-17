@@ -125,7 +125,7 @@ export default {
             const toDelete = this.selectedQuestionnaires.filter(item =>{
                 return !item.published || new Date(item.startTime) > new Date();
             });
-
+            console.log(toDelete);
             toDelete.forEach(item =>{
                 api.deleteQuestionnaire(item.id)
                     .then(response=>{
@@ -338,12 +338,15 @@ export default {
         table{
             width: 100%;
             border-collapse: collapse;
+            font-size: 20px;
             .table-header{
-                
                 th{
                     background-color: black;
                     color: white;
                 }
+            }
+            tbody tr{
+                text-align: center;
             }
             
         }

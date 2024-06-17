@@ -22,7 +22,7 @@
                     endDate:'',
                 },
                 //questions and choices
-                questions:[]
+                questions:[],
             }
         },
         components:{

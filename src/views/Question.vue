@@ -108,6 +108,12 @@ export default{
     display: flex;
     align-items: center;
     flex-direction: column;
+    font-family: "Cookie", cursive;
+    font-weight: 400;
+    font-style: normal;
+    *{
+        font: inherit   ;
+    }
     .QuizAdd{
         margin-top: 30px;
         width: 60%;
@@ -185,9 +191,13 @@ export default{
         table{
             width: 100%;
             border-collapse: collapse;
+            font-size: 30px;
             th{
                 background-color: black;
                 color: white;
+            }
+            tr{
+                text-align: center;
             }
         }
     }

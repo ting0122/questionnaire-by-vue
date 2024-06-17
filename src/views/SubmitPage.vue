@@ -118,6 +118,12 @@ export default{
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: "Cookie", cursive;
+    font-weight: 400;
+    font-style: normal;
+    *{
+        font: inherit;
+    }
     .QuizName{
         width: 60%;
         height: 10dvh;
