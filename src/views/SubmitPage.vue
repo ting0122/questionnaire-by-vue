@@ -17,6 +17,7 @@ export default{
         }
     },
     components:{Header},
+    emits:['return-text'],
     methods:{
         validateForm(){
             if (!this.userName || !this.phone || !this.email || !this.age) {
@@ -77,7 +78,7 @@ export default{
 </script>
 
 <template>
-    <Header></Header>
+    <Header @return-text="$emit('return-text',$event)"></Header>
     <div class="BigContainer">
         <div class="QuizName">{{ questionnaire.name }}</div>
         <div class="QuizDesc">{{ questionnaire.description }}</div>

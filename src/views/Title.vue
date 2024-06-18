@@ -1,5 +1,5 @@
 <script>
-import headerVue from '@/components/header.vue';
+import Header from '@/components/header.vue';
 
 export default{
     name: 'Title',
@@ -12,7 +12,7 @@ export default{
         }
     },
     emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save', 'publish','return-text'],
-    components:{headerVue},
+    components:{Header},
     methods:{
         //return to search list
         cancel(){
@@ -28,7 +28,7 @@ export default{
 </script>
 
 <template>
-    <headerVue></headerVue>
+    <Header @return-text="$emit('return-text',$event)"></Header>
     <div class="BigContainer">
         <div class="LeftImg">
             <div class="Img">

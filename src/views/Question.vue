@@ -16,7 +16,7 @@ export default{
             }
         }
     },
-    emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save', 'publish'],
+    emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save', 'publish','return-text'],
     components:{Header},
     methods:{
         Previous(){
@@ -44,7 +44,7 @@ export default{
 </script>
 
 <template>
-    <Header></Header>
+    <Header @return-text="$emit('return-text',$event)"></Header>
     <div class="BigContainer">
         <div class="QuizAdd">
             <img src="/src/assets/alley.jpg" alt="alley">

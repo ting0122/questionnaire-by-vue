@@ -33,7 +33,7 @@
             FeedBack,
             Statics,
             SearchList,
-            SubmitPage
+            SubmitPage,
         },
         methods:{
             //change manage or client mode
@@ -81,7 +81,7 @@
                 if(saveData){
                     const parsedData = JSON.parse(saveData);
                     this.questionnaire = parsedData.questionnaire;
-                    this.questions = parseData.questions;
+                    this.questions = parsedData.questions;
                 }
         }
     }
