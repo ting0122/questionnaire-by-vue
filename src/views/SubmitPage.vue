@@ -92,7 +92,7 @@ export default{
             <ol>
                 <li v-for="(question, index) in questions" :key="index">
                     {{ question.questionText }}
-                    <ul v-if="question.choices && question.choices.length">
+                    <ul v-if="question.choices && question.choices.length" class="cho">
                         <li v-for="choice in question.choices" :key="choice">
                             <input type="checkbox">{{ choice }}
                         </li>
@@ -119,12 +119,10 @@ export default{
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: "Cookie", cursive;
-    font-weight: 400;
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
     font-style: normal;
-    *{
-        font: inherit;
-    }
     .QuizName{
         width: 60%;
         height: 10dvh;
@@ -134,6 +132,7 @@ export default{
         justify-content: center;
         align-items: center;
         background-color: rgb(221,216,216);
+        font-size: 60px;
     }
     .QuizDesc{
         width: 60%;
@@ -144,6 +143,7 @@ export default{
         justify-content: center;
         align-items: center;
         background-color: rgb(221,216,216);
+        font-size: 40px;
     }
     .PersonInfo{
         width: 60%;
@@ -152,7 +152,7 @@ export default{
         border-bottom: 0;
         padding: 30px 10%;
         position: relative;
-        font-size: 40px;
+        font-size: 30px;
         background-color: rgb(221,216,216);
         *{
             background: inherit;
@@ -168,12 +168,22 @@ export default{
         }
     }
     .Qs{
+        padding: 20px 50px; 
         width: 60%;
         height: 50dvh;
         border: 3px dotted black;
         background-color: rgb(221,216,216);
+        font-size: 40px;
         *{
             background: inherit;
+        }
+        .cho{
+            list-style-type: none;
+            padding: 5px 20px;
+            font-size: smaller;
+            input{
+                margin-right: 20px;
+            }
         }
         .btns{
             position: fixed;
@@ -182,6 +192,9 @@ export default{
             button{
                 font-size: 30px;
                 margin-left:20px;
+                font-family: "Cookie", cursive;
+                font-weight: 400;
+                font-style: normal;
             }
         }
     }

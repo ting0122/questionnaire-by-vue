@@ -30,5 +30,9 @@ export default{
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
 }
 </style>

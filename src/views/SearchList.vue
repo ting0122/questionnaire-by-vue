@@ -205,7 +205,7 @@ export default {
                         <td>{{ item.ispublished?'Pub':'unPub' }}</td>
                         <td>{{ item.startDate }}</td>
                         <td>{{ item.endDate }}</td>
-                        <td><a :href="item.resultLink">Result</a></td>
+                        <td><a @click="to">Result</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -347,6 +347,7 @@ export default {
                 th{
                     background-color: black;
                     color: white;
+                    font-size: 25px;
                 }
             }
             tbody tr{

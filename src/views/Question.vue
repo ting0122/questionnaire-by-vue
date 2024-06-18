@@ -50,7 +50,7 @@ export default{
             <img src="/src/assets/alley.jpg" alt="alley">
             <div class="q1">
                 <label for="question">Question :</label>
-                <input type="text" id="question" v-model="newQuestion.questionText" placeholder="Enter your Question...">
+                <input type="text" id="question" v-model="newQuestion.questionText" placeholder="Question...">
                 <select name="type" id="type" v-model="newQuestion.type">
                     <option value="MCQ">MCQ</option>
                     <option value="MRQ">MRQ</option>
