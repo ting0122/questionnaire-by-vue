@@ -12,7 +12,7 @@ export default{
 
 <template>
     <div class="header">
-        <h1 @click="$emit('return-text','SearchList')">Not only QUESTIONNAIRE</h1>
+        <h1 @click="$emit('return-text','SearchList')">QUESTIONNAIRE</h1>
     </div>
 </template>
 

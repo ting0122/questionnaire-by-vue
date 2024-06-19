@@ -93,7 +93,6 @@ export default {
                 });
         },
         search() {
-
             const params = {
                 name: this.questionnaireName,
                 startDate: this.startDate,
@@ -103,9 +102,6 @@ export default {
                 .then(response => {
                     if(response.data.code === 200){
                         this.searchResults = response.data.questionnaires;
-                        this.$nextTick(() => {
-                            this.scrollToSearchBar();
-                        });
                     }
                     else{
                         console.error('Error fetching questionnaire:' , response.data.message);
@@ -115,19 +111,9 @@ export default {
                     console.error('Error searching questionnaires:', error);
                 });
         },
-        scrollToSearchBar(){    
-            const searchBar = this.$el.querySelector('.SearchBar');
-            if(searchBar){
-                console.log('Scrolling to search bar');
-                window.scrollTo({
-                    top:searchBar.getBoundingClientRect().top + window.scrollY,
-                    behavior:'smooth'
-                });
-            }
-        },
         trash(){
             const toDelete = this.selectedQuestionnaires.filter(item =>{
-                return !item.published || new Date(item.startTime) > new Date();
+                return !item.published || new Date(item.startDate) > new Date();
             });
             toDelete.forEach(item =>{
                 api.deleteQuestionnaire(item.id)
@@ -144,13 +130,29 @@ export default {
             this.$emit('return-text','Title');
         },
         toggleSelection(item){
-            console.log(item.id)
+            console.log(item)
             const index = this.selectedQuestionnaires.indexOf(item);
             if(index > -1){
                 this.selectedQuestionnaires.splice(index, 1);
             }else{
                 this.selectedQuestionnaires.push(item);
             }
+        },
+        goToQuiz(item){
+            const params = {
+                name: item.name
+            };
+            api.getQuestionnaires(params)
+                .then(response=>{
+                    if(response.data.code === 200){
+                        console.log(response.data.questionnaires);
+                    }else{
+                        console.error('Error fetching questionnaire:' , response.data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error searching questionnaires:', error);
+                });
         }
     }
 }
@@ -159,7 +161,7 @@ export default {
 <template>
     <!-- header -->
     <div class="header">
-        <h1>NOT ONLY QUESTIONNAIRE</h1>
+        <h1>QUESTIONNAIRE</h1>
     </div>
     <!-- left dash line -->
     <div class="LeftDash"></div>
@@ -171,11 +173,13 @@ export default {
                 <input type="search" id="quizName">
             </div>
             <div class="QuizPeriod">
-                <label for="quizBegin">From :</label>
-                <input type="date" id="quizBegin">
-                <label for="quizEnd">To :</label>
-                <input type="date" id="quizEnd">
-                <button @click="search">Search</button>
+                <div class="underContainer">
+                    <label for="quizBegin">From :</label>
+                    <input type="date" id="quizBegin">
+                    <label for="quizEnd">To :</label>
+                    <input type="date" id="quizEnd">
+                    <button @click="search">Search</button>
+                </div>
             </div>
         </div>
         <div class="icons" v-if="!isLocked">
@@ -205,7 +209,7 @@ export default {
                         <td>{{ item.ispublished?'Pub':'unPub' }}</td>
                         <td>{{ item.startDate }}</td>
                         <td>{{ item.endDate }}</td>
-                        <td><a @click="to">Result</a></td>
+                        <td class="searchResultsGo"><span @click="goToQuiz(item)">Go</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -239,15 +243,14 @@ export default {
     font-optical-sizing: auto;
     font-weight: 100;
     font-style: normal;
-    font-size: 70px;
+    font-size: 5dvw;
     // border: 1px solid black;
-    height: 40%;
+    height: 20%;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 40px;
+    // padding-top: 40px;
     h1{
-        width: 60%;
         text-align: center;
     }
 }
@@ -260,7 +263,7 @@ export default {
 }
 .ListContainer{
     width: 100%;
-    height: 200dvh;
+    height: 100dvh;
     // border: 1px solid black;
     flex-direction: column;
     display: flex;
@@ -268,8 +271,9 @@ export default {
     .SearchBar{
         background-color: rgb(221,216,216);
         position: relative;
-        margin-top: 80px;
-        width: 40%;
+        margin-top: 100px;
+        margin-bottom:40px;
+        width: 70%;
         height: 13rem;
         // border: 1px solid black;
         display: flex;
@@ -294,24 +298,30 @@ export default {
             }
         }
         .QuizPeriod{
-            input{
-                width: 24%;
-                font-size: 18px;
-            }
-            button{
-                margin-left: 20px;
-                width: 65px;
-                height: 40px;
+            .underContainer{
+                width: 100%;
+                height: 60%;
+                // border: 1px solid black;
+                input{
+                    width: 24%;
+                    font-size: 18px;
+                }
+                button{
+                    margin-left: 50px;
+                    width: 7dvw;
+                    height: 46px;
+                    
+                }
             }
         }
     }
     .icons{
-        width: 40%;
-        height: 2.5%;
+        width: 70dvw;
+        height: 7%;
         // border: 1px solid black;
-        background-image: url('/src/assets/zebra.jpeg');
-        background-repeat: no-repeat;
-        background-size: cover;
+        // background-image: url('/src/assets/zebra.jpeg');
+        // background-repeat: no-repeat;
+        // background-size: cover;
         position: relative;
         //filter for background
         &::before{
@@ -321,7 +331,7 @@ export default {
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(255, 255, 255, 0.8);
+            background: inherit;
             z-index: 1;
         }
         i{
@@ -335,24 +345,39 @@ export default {
         }
     }
     .SearchResult{
-        width: 40%;
-        height: 600px;
-        border: 1px solid black;
+        width: 70dvw;
+        height: 55dvh;
+        // border: 1px solid black;
         background-color: rgb(221,216,216);
+        margin-bottom:40px;
         table{
             width: 100%;
+            height: 100%;
             border-collapse: collapse;
             font-size: 20px;
             .table-header{
                 th{
                     background-color: black;
                     color: white;
-                    font-size: 25px;
+                    font-size: 1.5dvw;
                 }
             }
-            tbody tr{
+            tbody {
+                height: 80%;
+                tr{
                 text-align: center;
+                border-bottom: 1px solid black;
+                font-size: 1.2dvw;
             }
+        }
+            .searchResultsGo{
+                background: transparent;
+                &:hover{
+                    scale: 1.05;
+                    cursor: pointer;
+                }
+            }
+            
             
         }
     }
@@ -365,9 +390,11 @@ export default {
         button{
             width: 8%;
             border: none;
-            font-size: 20px;
+            font-size: 20px; 
+            cursor: pointer;
             &:hover{
                 scale: 1;
+                color:rgb(0,0,0,0.6);
                 font-size: 45px;
                 font-family: "Cookie", cursive;
                 font-weight: 400;
