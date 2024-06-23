@@ -56,7 +56,7 @@ export default{
                     <option value="MRQ">MRQ</option>
                     <option value="FITB">FITB</option>
                 </select>
-                <label for="required">Required :</label>
+                <label for="cb">Required :</label>
                 <input type="checkbox" v-model="newQuestion.required" id="cb">
             </div>
             <div class="q2">

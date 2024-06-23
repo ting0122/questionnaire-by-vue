@@ -30,7 +30,7 @@ export default {
             required: true
         }
     },
-    emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save', 'publish'],
+    emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save', 'publish','return-text'],
 
     mounted(){
         this.fetchAllQuestionnaires();
@@ -98,6 +98,7 @@ export default {
                 startDate: this.startDate,
                 endDate: this.endDate
             };
+            this.searchResults = [];
             api.getQuestionnaires(params)
                 .then(response => {
                     if(response.data.code === 200){
@@ -138,14 +139,26 @@ export default {
                 this.selectedQuestionnaires.push(item);
             }
         },
-        goToQuiz(item){
+        goToQuiz(id){
             const params = {
-                name: item.name
-            };
+                id: id
+            }
             api.getQuestionnaires(params)
                 .then(response=>{
                     if(response.data.code === 200){
-                        console.log(response.data.questionnaires);
+                        //renew the specify questionnaire information
+                        const newQuiz = {
+                            name: response.data.questionnaire.name,
+                            description: response.data.questionnaire.description,
+                            startDate: response.data.questionnaire.startDate,
+                            endDate: response.data.questionnaire.endDate
+                        }
+                        console.log(newQuiz);
+                        this.$emit('updateQuestionnaire',newQuiz);
+                        //renew the specify questions information
+                        this.$emit('updateQuestions',[...response.data.questionnaire.questions]);
+                        //redirect to questionnaire page
+                        this.$emit('return-text','SubmitPage');    
                     }else{
                         console.error('Error fetching questionnaire:' , response.data.message);
                     }
@@ -170,14 +183,14 @@ export default {
         <div class="SearchBar">
             <div class="QuizName">
                 <label for="quizName">Questionnaire :</label>
-                <input type="search" id="quizName">
+                <input type="search" id="quizName" v-model="questionnaireName">
             </div>
             <div class="QuizPeriod">
                 <div class="underContainer">
                     <label for="quizBegin">From :</label>
-                    <input type="date" id="quizBegin">
+                    <input type="date" id="quizBegin" v-model="startDate">
                     <label for="quizEnd">To :</label>
-                    <input type="date" id="quizEnd">
+                    <input type="date" id="quizEnd" v-model="endDate">
                     <button @click="search">Search</button>
                 </div>
             </div>
@@ -209,7 +222,7 @@ export default {
                         <td>{{ item.ispublished?'Pub':'unPub' }}</td>
                         <td>{{ item.startDate }}</td>
                         <td>{{ item.endDate }}</td>
-                        <td class="searchResultsGo"><span @click="goToQuiz(item)">Go</span></td>
+                        <td class="searchResultsGo"><span @click="goToQuiz(item.id)">Go</span></td>
                     </tr>
                 </tbody>
             </table>
