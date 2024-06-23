@@ -4,14 +4,16 @@ import Header from '@/components/header.vue';
 export default{
     name: 'Title',
     props:{
-        questionnaire: Object
+        questionnaire: Object,
+        questions: Array,
+        isLocked:Boolean
     },
     data(){
         return{
             localQuestionnaire: {...this.questionnaire}
         }
     },
-    emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save', 'publish','return-text'],
+    emits: ['update-questionnaire', 'updateQuestions', 'returnText', 'save', 'publish','return-text'],
     components:{Header},
     methods:{
         //return to search list

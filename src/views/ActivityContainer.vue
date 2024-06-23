@@ -53,15 +53,21 @@
                 this.questions = newQuestions;
             },
             //save to the web browser
-            saveToLocalStorage(){
+            saveQuiz(){
                 const data = {
                     questionnaire: this.questionnaire,
                     question: this.questions
                 };
-                localStorage.setItem('questionnaireData', JSON.stringify(data));
+                api.saveQuestionnaire(data)
+                    .then(response => {
+                        console.log('Questionnaire saved:', response.data);
+                    })
+                    .catch(error =>{
+                        console.log('Error saving questionnaire:', error);
+                    });
             },
             //push questioinnaire to backend
-            publishToServer(){
+            publishQuiz(){
                 const data = {
                     questionnaire: this.questionnaire,
                     questions: this.questions
@@ -100,8 +106,9 @@
                         @update-questionnaire="updateQuestionnaire"
                         @update-questions="updateQuestions"
                         @return-text="changeComponent"
-                        @save="saveToLocalStorage"
-                        @publish="publishToServer">
+                        @save-quiz="saveQuiz"
+                        @publish-quiz="publishQuiz"
+                        >
             </component>
         </div>
     </template>

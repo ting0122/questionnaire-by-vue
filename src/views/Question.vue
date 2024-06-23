@@ -4,7 +4,9 @@ import Header from '@/components/header.vue';
 export default{
     name: 'Question',
     props:{
-        questions: Array
+        questions: Array,
+        questionnaire: Object,
+        isLocked:Boolean
     },
     data(){
         return{
@@ -16,7 +18,7 @@ export default{
             }
         }
     },
-    emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save', 'publish','return-text'],
+    emits: ['updateQuestionnaire','update-questionnaire', 'updateQuestions', 'update-questions','returnText', 'save', 'publish','return-text'],
     components:{Header},
     methods:{
         Previous(){
@@ -28,7 +30,7 @@ export default{
             this.$emit('update-questions',[...this.questions,question]);
             this.newQuestion.questionText='';
             this.newQuestion.choices='';
-            this.newQuestion.type='單選題';
+            this.newQuestion.type='MCQ';
             this.newQuestion.required=false;
         },
         removeQuestion(index){

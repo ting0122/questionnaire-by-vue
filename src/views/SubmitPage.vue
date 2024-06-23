@@ -6,7 +6,8 @@ export default{
     name: 'SubmitPage',
     props:{
         questions: Array,
-        questionnaire: Object
+        questionnaire: Object,
+        isLocked:Boolean
     },
     data(){
         return{
@@ -17,7 +18,7 @@ export default{
         }
     },
     components:{Header},
-    emits:['return-text'],
+    emits:['return-text','save-quiz','publish-quiz','saveQuiz','publishQuiz'],
     methods:{
         validateForm(){
             if (!this.userName || !this.phone || !this.email || !this.age) {
@@ -35,43 +36,18 @@ export default{
             return re.test(String(email).toLowerCase());
         },
         save(){
-            if(!this.validateForm())
-                return;
-            const data = {
-                userName: this.userName,
-                phone: this.phone,
-                email: this.email,
-                age: this.age,
-                questionnaire: this.questionnaire,
-                questions: this.questions
-            };
-
-            api.saveQuestionnaire(data)
-                .then(response => {
-                    alert('Data saved successfully');
-                })
-                .catch(error => {
-                    console.log('Error saving data:', error);
-                })
+            if(this.isLocked){
+                if(!this.validateForm())
+                    return
+            }
+            this.$emit('save-quiz')
         },
         publish(){
-            if(!this.validateForm())
-                return;
-            const data = {
-                userName: this.userName,
-                phone: this.phone,
-                email: this.email,
-                age: this.age,
-                questionnaire: { ...this.questionnaire, published: true },
-                questions: this.questions
-            };
-            api.saveQuestionnaire(data)
-                .then(response => {
-                    alert('Data saved successfully');
-                })
-                .catch(error => {
-                    console.log('Error saving data:', error);
-                })
+            if(this.isLocked){
+                if(!this.validateForm())
+                    return
+            }
+            this.$emit('publish-quiz')
         }   
     }
 }
@@ -83,10 +59,10 @@ export default{
         <div class="QuizName">{{ questionnaire.name }}</div>
         <div class="QuizDesc">{{ questionnaire.description }}</div>
         <div class="PersonInfo">
-            <label for="user-name">Name :</label><input id="user-name" type="text" v-model="userName"><br>
-            <label for="phone">Phone :</label><input id="phone" type="text" v-model="phone"><br>
-            <label for="mail">Mail :</label><input id="mail" type="text" v-model="email"><br>
-            <label for="age">Age :</label><input id="age" type="text" v-model="age"><br>
+            <label for="user-name">Name :</label><input id="user-name" type="text" v-model="userName" :disabled="!isLocked"><br>
+            <label for="phone">Phone :</label><input id="phone" type="text" v-model="phone" :disabled="!isLocked"><br>
+            <label for="mail">Mail :</label><input id="mail" type="text" v-model="email" :disabled="!isLocked"><br>
+            <label for="age">Age :</label><input id="age" type="text" v-model="age" :disabled="!isLocked"><br>
         </div>
         <div class="Qs">
             <ol>
@@ -94,7 +70,7 @@ export default{
                     {{ question.questionText }}
                     <ul v-if="question.choices && question.choices.length" class="cho">
                         <li v-for="choice in question.choices" :key="choice">
-                            <input type="checkbox">{{ choice }}
+                            <input type="checkbox" :disabled="!isLocked">{{ choice }}
                         </li>
                     </ul>
                 </li>

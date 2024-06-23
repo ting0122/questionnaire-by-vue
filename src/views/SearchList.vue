@@ -83,6 +83,7 @@ export default {
                 .then(response => {
                     if(response.data.code === 200){
                         this.searchResults = response.data.questionnaires;
+                        console.log(this.searchResults)
                     }
                     else{
                         console.error('Error fetching questionnaire:' , response.data.message);
