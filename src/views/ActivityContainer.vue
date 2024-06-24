@@ -10,6 +10,7 @@
     import api from '@/api';
 
     export default{
+        name: 'ActivityContainer',
         data(){
             return{
                 //index page 
@@ -72,6 +73,7 @@
                     questionnaire: this.questionnaire,
                     questions: this.questions
                 };
+                console.log(data)
                 api.saveQuestionnaire(data)
                     .then(response => {
                         console.log('Questionnaire saved:', response.data);

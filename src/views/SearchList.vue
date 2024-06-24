@@ -83,7 +83,6 @@ export default {
                 .then(response => {
                     if(response.data.code === 200){
                         this.searchResults = response.data.questionnaires;
-                        console.log(this.searchResults)
                     }
                     else{
                         console.error('Error fetching questionnaire:' , response.data.message);
@@ -155,9 +154,9 @@ export default {
                             endDate: response.data.questionnaire.endDate
                         }
                         console.log(newQuiz);
-                        this.$emit('updateQuestionnaire',newQuiz);
+                        this.$emit('update-questionnaire',newQuiz);
                         //renew the specify questions information
-                        this.$emit('updateQuestions',[...response.data.questionnaire.questions]);
+                        this.$emit('update-questions',[...response.data.questionnaire.questions]);
                         //redirect to questionnaire page
                         this.$emit('return-text','SubmitPage');    
                     }else{

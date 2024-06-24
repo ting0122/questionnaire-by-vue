@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import ListActivity from '@/views/ActivityContainer.vue'
+import ActivityContainer from '@/views/ActivityContainer.vue'
 
 
 const router = createRouter({
@@ -7,8 +7,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'ListActivity',
-      component: ListActivity
+      name: 'ActivityContainer',
+      component: ActivityContainer
     }
   ]
 })
