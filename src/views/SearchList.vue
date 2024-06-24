@@ -30,7 +30,7 @@ export default {
             required: true
         }
     },
-    emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save', 'publish','return-text'],
+    emits: ['updateQuestionnaire', 'updateQuestions', 'returnText', 'save-quiz', 'publish-quiz','return-text'],
 
     mounted(){
         this.fetchAllQuestionnaires();

@@ -18,7 +18,7 @@ export default{
         }
     },
     components:{Header},
-    emits:['return-text','save-quiz','publish-quiz','saveQuiz','publishQuiz'],
+    emits:['return-text','save-quiz','publish-quiz','update-questionnaire','update-questions'],
     methods:{
         validateForm(){
             if (!this.userName || !this.phone || !this.email || !this.age) {

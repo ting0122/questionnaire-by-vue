@@ -13,7 +13,7 @@ export default{
             localQuestionnaire: {...this.questionnaire}
         }
     },
-    emits: ['update-questionnaire', 'updateQuestions', 'returnText', 'save', 'publish','return-text'],
+    emits: ['update-questionnaire', 'updateQuestions', 'returnText', 'save-quiz', 'publish-quiz','return-text'],
     components:{Header},
     methods:{
         //return to search list

@@ -18,7 +18,7 @@ export default{
             }
         }
     },
-    emits: ['updateQuestionnaire','update-questionnaire', 'updateQuestions', 'update-questions','returnText', 'save', 'publish','return-text'],
+    emits: ['updateQuestionnaire','update-questionnaire', 'updateQuestions', 'update-questions','returnText', 'save-quiz', 'publish-quiz','return-text'],
     components:{Header},
     methods:{
         Previous(){
