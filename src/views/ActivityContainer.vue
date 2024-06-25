@@ -21,6 +21,7 @@
                     description: '',
                     startDate:'',
                     endDate:'',
+                    published: false,
                 },
                 //questions and choices
                 questions:[],
@@ -56,9 +57,10 @@
             //save to the web browser
             saveQuiz(){
                 const data = {
-                    questionnaire: this.questionnaire,
-                    question: this.questions
+                    questionnaire: {...this.questionnaire},
+                    questions: this.questions.map(q=>({...q}))
                 };
+                console.log('Request Data:', JSON.stringify(data, null, 2));
                 api.saveQuestionnaire(data)
                     .then(response => {
                         console.log('Questionnaire saved:', response.data);
@@ -73,7 +75,7 @@
                     questionnaire: this.questionnaire,
                     questions: this.questions
                 };
-                console.log(data)
+                console.log('Request Data:', JSON.stringify(data, null, 2));
                 api.saveQuestionnaire(data)
                     .then(response => {
                         console.log('Questionnaire saved:', response.data);
